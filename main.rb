@@ -4,4 +4,3 @@ require_relative 'players.rb'
 
 my_game = Game.new
 my_game.play
-p my_game.secret_code

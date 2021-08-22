@@ -1,5 +1,7 @@
+require_relative 'user_interface.rb'
+
 class Game
-  attr_reader :board, :secret_code
+  include UserInterface
 
   def initialize
     @board = Board.new
@@ -7,6 +9,10 @@ class Game
 
   def play
     game_setup
+
+    puts player_guess_prompt
+    guess = gets.chomp
+    board.display_board(guess)
   end
 
   def game_setup
