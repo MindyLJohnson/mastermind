@@ -12,12 +12,13 @@ class Game
   def play
     game_setup
 
-    puts player_guess_prompt
-    @guess = gets.chomp.to_s.split('')
+    until code_cracked?
+      puts player_guess_prompt
+      @guess = gets.chomp.to_s.split('')
 
-    get_clues
-
-    board.display_board(guess, clues)
+      get_clues
+      board.display_board(guess, clues)
+    end
   end
 
   def game_setup
@@ -38,5 +39,9 @@ class Game
     end
 
     clues.sort!
+  end
+
+  def code_cracked?
+    guess.eql?(secret_code)
   end
 end
