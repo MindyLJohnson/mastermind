@@ -22,7 +22,7 @@ class Game
   end
 
   def game_setup
-    @secret_code = Array.new(4) {rand(1..6).to_s}
+    p @secret_code = Array.new(4) {rand(1..6).to_s}
   end
 
   def get_clues
