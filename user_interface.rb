@@ -11,7 +11,16 @@ module UserInterface
     'Make an attempt at cracking the code! (4-digits between 1 and 6)'
   end
 
-  def invalid_guess_prompt
-    'Invalid guess. Please input a 4-digit number between 1 and 6.'
+  def invalid_input_prompt
+    'Invalid input. Please input a 4-digit number between 1 and 6.'
+  end
+
+  def valid_input
+    input = gets.chomp.to_s.split('')
+    until valid_input?(input)
+      puts invalid_input_prompt
+      input = gets.chomp.to_s.split('')
+    end
+    input
   end
 end
