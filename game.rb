@@ -3,10 +3,11 @@ require_relative 'user_interface.rb'
 class Game
   include UserInterface
 
-  attr_reader :board, :guess, :secret_code, :clues
+  attr_reader :board, :player_mode, :guess, :secret_code, :clues
 
   def initialize
     @board = Board.new
+    @player_mode = "BREAKER"
   end
 
   def play
@@ -24,9 +25,22 @@ class Game
   end
 
   def game_setup
-    p @secret_code = Array.new(4) {rand(1..6).to_s}    
     puts player_mode_prompt
     @player_mode = gets.chomp
+    make_code
+  end
+
+  def make_code
+    if player_mode.upcase == "MAKER"
+      puts secret_code_prompt
+      p @secret_code = gets.chomp.to_s.split('')
+    else
+      p @secret_code = Array.new(4) {rand(1..6).to_s}
+    end
+  end
+
+  def valid_guess?
+    guess.length == 4 && guess.all? {|code| code.to_i.between?(1, 6)}
   end
 
   def get_clues
@@ -41,10 +55,6 @@ class Game
       end
     end
     clues.sort!
-  end
-
-  def valid_guess?
-    guess.length == 4 && guess.all? {|code| code.to_i.between?(1, 6)}
   end
 
   def code_cracked?

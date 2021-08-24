@@ -3,6 +3,10 @@ module UserInterface
     "Would you rather be the code MAKER or the code BREAKER?"
   end
 
+  def secret_code_prompt
+    "Create a 4-digit code between 1 and 6 for the Computer to break."
+  end
+
   def player_guess_prompt
     "Make an attempt at cracking the code! (4-digits between 1 and 6)"
   end
