@@ -23,6 +23,9 @@ class Game
 
   def game_setup
     p @secret_code = Array.new(4) {rand(1..6).to_s}
+    
+    puts player_mode_prompt
+    @player_mode = gets.chomp
   end
 
   def get_clues
