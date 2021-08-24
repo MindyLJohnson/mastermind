@@ -1,24 +1,23 @@
-require_relative 'user_interface.rb'
-
 class Game
   include UserInterface
 
-  attr_reader :board, :player_mode, :guess, :secret_code, :clues
+  attr_reader :board, :player_mode, :clues, :guess, :secret_code
 
   def initialize
     @board = Board.new
-    @player_mode = "BREAKER"
+    @player_mode = 'BREAKER'
+    @clues = []
   end
 
   def play
     game_setup
     until code_cracked?
-      if player_mode == "BREAKER"
+      if player_mode == 'BREAKER'
         player_crack_code
       else
         computer_crack_code
       end
-      get_clues
+      create_clues
       board.display_board(guess, clues)
     end
   end
@@ -30,11 +29,11 @@ class Game
   end
 
   def make_code
-    if player_mode.upcase == "MAKER"
+    if player_mode.upcase == 'MAKER'
       puts secret_code_prompt
       p @secret_code = gets.chomp.to_s.split('')
     else
-      p @secret_code = Array.new(4) {rand(1..6).to_s}
+      p @secret_code = Array.new(4) { rand(1..6).to_s }
     end
   end
 
@@ -47,24 +46,24 @@ class Game
     end
   end
 
+  def valid_guess?
+    guess.length == 4 && guess.all? { |code| code.to_i.between?(1, 6) }
+  end
+
   def computer_crack_code
+    p assess_clues
     @guess = Array.new(4) {rand(1..6).to_s}
   end
 
-  def valid_guess?
-    guess.length == 4 && guess.all? {|code| code.to_i.between?(1, 6)}
-  end
-
-  def get_clues
-    @clues = []
+  def create_clues
     guess.each_index do |index|
-      if guess[index] == secret_code[index]
-        clues << '*'
-      elsif guess.include?(secret_code[index])
-        clues << '?'
-      else
-        clues << '_'
-      end
+      clues << if guess[index] == secret_code[index]
+                 '*'
+               elsif guess.include?(secret_code[index])
+                 '?'
+               else
+                 '_'
+               end
     end
     clues.sort!
   end

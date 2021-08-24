@@ -15,9 +15,9 @@ class Board
   }
 
   def display_board(guess, clues)
-    guess.each {|code| print "#{CODE_COLORS[code]} "}
+    guess.each { |code| print "#{CODE_COLORS[code]} " }
     print "\e[1m Clues: \e[0m"
-    clues.each {|code| print "#{CLUE_SYMBOLS[code]}"}
+    clues.each { |code| print CLUE_SYMBOLS[code].to_s }
     print "\n"
   end
 end
