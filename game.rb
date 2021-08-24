@@ -13,11 +13,10 @@ class Game
   def play
     game_setup
     until code_cracked?
-      puts player_guess_prompt
-      @guess = gets.chomp.to_s.split('')
-      until valid_guess?
-        puts invalid_guess_prompt
-        @guess = gets.chomp.to_s.split('')
+      if player_mode == "BREAKER"
+        player_crack_code
+      else
+        computer_crack_code
       end
       get_clues
       board.display_board(guess, clues)
@@ -37,6 +36,19 @@ class Game
     else
       p @secret_code = Array.new(4) {rand(1..6).to_s}
     end
+  end
+
+  def player_crack_code
+    puts player_guess_prompt
+    @guess = gets.chomp.to_s.split('')
+    until valid_guess?
+      puts invalid_guess_prompt
+      @guess = gets.chomp.to_s.split('')
+    end
+  end
+
+  def computer_crack_code
+    @guess = Array.new(4) {rand(1..6).to_s}
   end
 
   def valid_guess?
