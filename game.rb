@@ -50,6 +50,7 @@ class Game
   end
 
   def computer_crack_code
+    
     @guess = Array.new(4) { rand(1..6).to_s }
   end
 
