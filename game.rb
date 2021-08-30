@@ -3,13 +3,14 @@ require_relative 'user_interface'
 class Game
   include UserInterface
 
-  attr_reader :board, :player_mode, :clues, :guess, :secret_code
+  attr_reader :board, :player_mode, :clues, :guess, :secret_code, :possible_solutions, :first_guess
 
   def initialize
     @board = Board.new
     @player_mode = 'BREAKER'
     @secret_code = []
     @possible_solutions = (1111..6666).to_a
+    @first_guess = true
   end
 
   def play
@@ -39,8 +40,7 @@ class Game
       else
         computer_crack_code
       end
-      @clues = []
-      create_clues
+      @clues = board.create_clues(guess, secret_code, [])
       board.display_board(guess, clues)
     end
   end
@@ -51,21 +51,15 @@ class Game
   end
 
   def computer_crack_code
-    
-    @guess = Array.new(4) { rand(1..6).to_s }
+    @guess = first_guess ? %w[1 1 2 2] : new_guess
+    @first_guess = false
   end
 
-  def create_clues
-    guess.each_index do |index|
-      clues << if guess[index] == secret_code[index]
-                 '*'
-               elsif guess.include?(secret_code[index])
-                 '?'
-               else
-                 '_'
-               end
+  def new_guess
+    possible_solutions.delete_if do |solution|
+      board.create_clues(solution.to_s.split(''), guess, []).eql?(clues)
     end
-    clues.sort!
+    possible_solutions[1].to_s.split('')
   end
 
   def valid_input?(input)
