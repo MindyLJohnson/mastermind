@@ -9,6 +9,7 @@ class Game
     @board = Board.new
     @player_mode = 'BREAKER'
     @secret_code = []
+    @possible_solutions = (1111..6666).to_a
   end
 
   def play

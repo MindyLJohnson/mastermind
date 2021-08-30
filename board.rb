@@ -14,8 +14,6 @@ class Board
     '_' => "\e[1;37m\u25CB \e[0m"
   }.freeze
 
-  SOLUTIONS = (1111..6666).to_a.freeze
-
   def display_board(guess, clues)
     guess.each { |code| print "#{CODE_COLORS[code]} " }
     print "\e[1m Clues: \e[0m"
