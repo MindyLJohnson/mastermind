@@ -3,13 +3,27 @@ require_relative 'user_interface'
 class Game
   include UserInterface
 
-  attr_reader :board, :player_mode, :clues, :guess, :secret_code, :possible_solutions, :first_guess
+  attr_reader :board, :player_mode, :clues, :guess, :secret_code,
+              :possible_guesses, :remaining_guesses, :first_guess,
+              :guess_scores
+
+  POSSIBLE_GUESSES = (1111..6666).to_a.reject! do |code|
+    code.to_s.split('').any?('0') || code.to_s.split('').any?('7') ||
+      code.to_s.split('').any?('8') || code.to_s.split('').any?('9')
+  end
+
+  POSSIBLE_CLUES = [%w[_ _ _ _],
+                    %w[? _ _ _], %w[? ? _ _], %w[? ? ? _], %w[? ? ? ?],
+                    %w[* _ _ _], %w[* * _ _], %w[* * * _], %w[* * * *],
+                    %w[* ? _ _], %w[* ? ? _], %w[* ? ? ?],
+                    %w[* * ? _], %w[* * ? ?],
+                    %w[* * * ?]].freeze
 
   def initialize
     @board = Board.new
     @player_mode = 'BREAKER'
     @secret_code = []
-    @possible_solutions = (1111..6666).to_a
+    @remaining_guesses = POSSIBLE_GUESSES.clone
     @first_guess = true
   end
 
@@ -56,10 +70,21 @@ class Game
   end
 
   def new_guess
-    possible_solutions.delete_if do |solution|
+    remaining_guesses.delete_if do |solution|
       board.create_clues(solution.to_s.split(''), guess, []).eql?(clues)
     end
-    possible_solutions[1].to_s.split('')
+    @guess_scores = remaining_guesses.collect do |remaining_guess|
+      @guess_score = 0
+      POSSIBLE_GUESSES.each do |possible_guess|
+        POSSIBLE_CLUES.each do |possible_clue|
+          if board.create_clues(possible_guess.to_s.split(''), remaining_guess.to_s.split(''), []).eql?(possible_clue)
+            @guess_score += 1
+          end
+        end
+      end
+    end
+    p guess_scores
+    p remaining_guesses[guess_scores.index(guess_scores.max)]
   end
 
   def valid_input?(input)
