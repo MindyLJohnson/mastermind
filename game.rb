@@ -68,13 +68,15 @@ class Game
   end
 
   def new_guess
-    remaining_guesses.delete_if do |remaining_guess|
+    remaining_guesses.keep_if do |remaining_guess|
       board.create_clues(remaining_guess, guess).eql?(clues)
     end
-    p remaining_guesses.sort![0]
+    p board.create_clues(%w[1 2 3 4], guess).eql?(clues)
+    remaining_guesses.min
   end
 
   def code_cracked?
+    p clues
     guess.eql?(secret_code)
   end
 end

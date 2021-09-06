@@ -15,27 +15,34 @@ class Board
   }.freeze
 
   def create_clues(guess, code)
+    temp_guess = guess.clone
     temp_code = code.clone
-    exact_match(guess, temp_code)
-    close_match(guess, temp_code)
-    no_match(temp_code).sort
+    exact_match(temp_guess, temp_code)
+    close_match(temp_guess, temp_code)
+    no_match(temp_guess).sort
   end
 
   def exact_match(guess, code)
-    code.each_index do |index|
-      code[index] = '*' if guess[index] == code[index]
+    guess.each_index do |index|
+      if guess[index] == code[index]
+        guess[index] = '*'
+        code[index] = '_'
+      end
     end
   end
 
   def close_match(guess, code)
-    code.each_index do |index|
-      code[index] = '?' if guess.include? code[index]
+    guess.each_index do |index|
+      if code.include? guess[index]
+        code[code.index(guess[index])] = '_'
+        guess[index] = '?'
+      end
     end
   end
 
-  def no_match(code)
-    code.each_index do |index|
-      code[index] = '_' if code[index] != '*' && code[index] != '?'
+  def no_match(guess)
+    guess.each_index do |index|
+      guess[index] = '_' if guess[index] != '*' && guess[index] != '?'
     end
   end
 
