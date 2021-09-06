@@ -21,8 +21,6 @@ class Game
 
   def initialize
     @board = Board.new
-    @player_mode = 'BREAKER'
-    @secret_code = []
     @remaining_guesses = POSSIBLE_GUESSES.clone
     @first_guess = true
   end
