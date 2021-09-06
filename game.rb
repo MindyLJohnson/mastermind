@@ -34,12 +34,12 @@ class Game
 
   def game_setup
     puts player_mode_prompt
-    @player_mode = gets.chomp
+    @player_mode = valid_mode
     create_code
   end
 
   def create_code
-    if player_mode.upcase == 'MAKER'
+    if player_mode == 'MAKER'
       puts secret_code_prompt
       p @secret_code = valid_input
     else
@@ -75,10 +75,6 @@ class Game
       board.create_clues(remaining_guess.to_s.split(''), guess).eql?(clues)
     end
     p remaining_guesses.sort![0].to_s.split('')
-  end
-
-  def valid_input?(input)
-    input.length == 4 && input.all? { |code| code.to_i.between?(1, 6) }
   end
 
   def code_cracked?
