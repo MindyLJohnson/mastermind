@@ -54,7 +54,7 @@ class Game
       else
         computer_crack_code
       end
-      @clues = board.create_clues(guess, secret_code, [])
+      @clues = board.create_clues(guess, secret_code)
       board.display_board(guess, clues)
     end
   end
@@ -65,26 +65,16 @@ class Game
   end
 
   def computer_crack_code
-    @guess = first_guess ? %w[1 1 2 2] : new_guess
-    @first_guess = false
+    @guess = %w[1 1 2 2]
   end
 
   def new_guess
-    remaining_guesses.delete_if do |solution|
-      board.create_clues(solution.to_s.split(''), guess, []).eql?(clues)
+    p guess
+    remaining_guesses.delete_if do |remaining_guess|
+      p remaining_guess
+      board.create_clues(remaining_guess.to_s.split(''), guess).eql?(clues)
     end
-    @guess_scores = remaining_guesses.collect do |remaining_guess|
-      @guess_score = 0
-      POSSIBLE_GUESSES.each do |possible_guess|
-        POSSIBLE_CLUES.each do |possible_clue|
-          if board.create_clues(possible_guess.to_s.split(''), remaining_guess.to_s.split(''), []).eql?(possible_clue)
-            @guess_score += 1
-          end
-        end
-      end
-    end
-    p guess_scores
-    p remaining_guesses[guess_scores.index(guess_scores.max)]
+    p remaining_guesses.sort![0].to_s.split('')
   end
 
   def valid_input?(input)

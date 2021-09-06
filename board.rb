@@ -14,17 +14,29 @@ class Board
     '_' => "\e[1;37m\u25CB \e[0m"
   }.freeze
 
-  def create_clues(guess, code, clues)
+  def create_clues(guess, code)
+    temp_guess = guess.clone
+    exact_match(temp_guess, code)
+    close_match(temp_guess, code)
+    no_match(temp_guess).sort
+  end
+
+  def exact_match(guess, code)
     guess.each_index do |index|
-      clues << if guess[index] == code[index]
-                 '*'
-               elsif guess.include?(code[index])
-                 '?'
-               else
-                 '_'
-               end
+      guess[index] = '*' if guess[index] == code[index]
     end
-    clues.sort!
+  end
+
+  def close_match(guess, code)
+    guess.each_index do |index|
+      guess[index] = '?' if guess.include? code[index]
+    end
+  end
+
+  def no_match(guess)
+    guess.each_index do |index|
+      guess[index] = '_' if guess[index] != '*' && guess[index] != '?'
+    end
   end
 
   def display_board(guess, clues)
