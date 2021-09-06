@@ -21,7 +21,7 @@ class Game
 
   def initialize
     @board = Board.new
-    @remaining_guesses = POSSIBLE_GUESSES.clone
+    @remaining_guesses = POSSIBLE_GUESSES.collect { |code| code.to_s.split('') }
     @first_guess = true
   end
 
@@ -63,16 +63,15 @@ class Game
   end
 
   def computer_crack_code
-    @guess = %w[1 1 2 2]
+    @guess = first_guess ? %w[1 1 2 2] : new_guess
+    @first_guess = false
   end
 
   def new_guess
-    p guess
     remaining_guesses.delete_if do |remaining_guess|
-      p remaining_guess
-      board.create_clues(remaining_guess.to_s.split(''), guess).eql?(clues)
+      board.create_clues(remaining_guess, guess).eql?(clues)
     end
-    p remaining_guesses.sort![0].to_s.split('')
+    p remaining_guesses.sort![0]
   end
 
   def code_cracked?
