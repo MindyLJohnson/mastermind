@@ -32,6 +32,7 @@ class ComputerPlayer
 
   def new_guess
     unless first_guess
+      puts 'Thinking...'
       reduce_guesses
       next_guess
       @guess = remaining_guesses.min

@@ -47,9 +47,10 @@ module Board
   end
 
   def display_board(guess, clues)
+    print "\n"
     guess.each { |code| print "#{CODE_COLORS[code]} " }
     print "\e[1m Clues: \e[0m"
     clues.each { |code| print CLUE_SYMBOLS[code].to_s }
-    print "\n"
+    print "\n\n"
   end
 end
