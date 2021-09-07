@@ -18,6 +18,7 @@ class Game
     game_mode
     @secret_code = maker.create_code
     crack_code
+    puts 'CODE CRACKED!!'
   end
 
   def game_mode
