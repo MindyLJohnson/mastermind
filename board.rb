@@ -1,4 +1,4 @@
-class Board
+module Board
   CODE_COLORS = {
     '1' => "\e[1;41m 1 \e[0m",
     '2' => "\e[1;42m 2 \e[0m",
