@@ -5,10 +5,13 @@ class Game
   include UserInterface
   include Board
 
-  attr_reader :board, :player_mode, :maker, :breaker, :guess, :clues
+  attr_reader :player_mode, :maker, :breaker, :guess, :clues
 
   def initialize
+    @player_mode = 'BREAKER'
+    @guess = []
     @clues = []
+    @secret_code = []
   end
 
   def play

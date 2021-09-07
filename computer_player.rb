@@ -4,7 +4,7 @@ class ComputerPlayer
   include Board
 
   attr_reader :possible_guesses, :remaining_guesses, :guess, :first_guess,
-              :guess_scores, :clues
+              :clues, :guess_scores
 
   POSSIBLE_GUESSES = (1111..6666).to_a.reject! do |code|
     code.to_s.split('').any?('0') || code.to_s.split('').any?('7') ||
@@ -24,6 +24,7 @@ class ComputerPlayer
     @guess = %w[1 1 2 2]
     @first_guess = true
     @clues = []
+    @guess_scores = []
   end
 
   def create_code
